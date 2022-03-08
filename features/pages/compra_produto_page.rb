@@ -31,7 +31,7 @@ class CompraProduto < SitePrism::Page
             @vencimento = '30'
             @parcelas = '5'
             @pagamento = 'Carnê'
-            @entrada = '0,00'
+            @entrada = '5,00'
         elsif operador == 'Compra_P3'
             @cpf_cnpj = '88363309915'
             @produto = '6764509'
@@ -51,6 +51,8 @@ class CompraProduto < SitePrism::Page
         end
     end
 
+
+    #Métodos
     def compra(operador)
         carregar_variaveis(operador)
 

@@ -20,8 +20,11 @@ class IdentificarCliente < SitePrism::Page
     element :cliente_identificado, 'div[class="customer-name qa-core-client-name-read"]'
     element :botao_sim_tenho_certeza, 'button[class="qa-core-interrupt-service-yes-click"]'
     element :botao_voltar_identificacao, 'button[is-secondary qa-core-interrupt-service-no-click]'
+    def validar_cliente
+        page.has_css?('button[class="is-secondary qa-core-start-new-service-click"]', :wait => 5)
+    end
 
-
+    
     #Métodos
     def selecionar_cliente(cliente)
         tela_identificar_cliente.click
@@ -36,7 +39,7 @@ class IdentificarCliente < SitePrism::Page
     end
 
     def encerrar_atendimento
-        if page.has_css?('button[class="is-secondary qa-core-start-new-service-click"]')
+        if validar_cliente
             puts "Cliente Identidicado"
             
             botao_encerrar_atendimento.click

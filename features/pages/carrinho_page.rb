@@ -1,6 +1,10 @@
 class Carrinho < SitePrism::Page
     set_url ''
 
+    def initialize
+        @base_screen = BaseScreen.new        
+    end
+
     #Elementos
     element :botao_vida_protegida, 'div[class="detalhes-seguro"]'
     element :botao_protecao_casa_mais, 'label[class="item-seguro"]'
@@ -44,6 +48,10 @@ class Carrinho < SitePrism::Page
     element :botao_desconto, 'button[class="header-title qa-core-filters-click desconto"]'
     element :botao_ver_detalhes, 'button[class="toggle-total-per-type"]'
     element :botao_gerar_pedido, 'button[class="main-action qa-cart-payment-footer-delivery-cart-submit-payment-click"]'
+    element :botao_fechar_mensagem, 'button[class="qa-core-alert-modal-close-click"]'
+    def mensagem_alerta
+        page.has_css?('p[class="qa-core-alert-message-content-read"]', :wait => 5)
+    end
 
 
     #Métodos
@@ -62,10 +70,21 @@ class Carrinho < SitePrism::Page
     def forma_pagamento(pagamento, entrada, vencimento, parcelas)
         botao_carne.click
         sleep(1)
+        msg_condicoes_pagamento
         campo_valor_entrada.set(entrada)
         botao_ok_entrada.click
         dia_primeiro_vencimento(vencimento).click
         quantidade_parcelas(parcelas).click
         botao_confirmar.click
+    end
+
+    def msg_condicoes_pagamento
+        if mensagem_alerta
+            puts "Com mensagem de Atenção"
+            botao_fechar_mensagem.click
+            sleep(1)
+        else 
+            puts "Sem mensagem de Atenção"
+        end
     end
 end
